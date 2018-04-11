@@ -6,13 +6,13 @@ import numpy as np
 BATCH_SIZE=8
 seed=233455
 
-rdm=np.randmon.RandomState(seed)
+rdm=np.random.RandomState(seed)
 X = rdm.rand(32,2)
 Y_= [[x1+x2+(rdm.rand()/10.0+0.05)] for (x1,x2) in X]
 
 #1.定义神经网络的输入，参数和输出，定义前向传播过程
 x = tf.placeholder(tf.float32,shape=(None,2))
-y_= tf.placeholder(tf.float32,shape=(None,2))
+y_= tf.placeholder(tf.float32,shape=(None,1))
 w1=tf.Variable(tf.random_normal([2,1],stddev=1,seed=1))
 y=tf.matmul(x,w1)
 
@@ -22,14 +22,14 @@ train_step=tf.train.GradientDescentOptimizer(0.001).minimize(loss_mse)
 
 #生成会话，训练STEPS轮
 with tf.Session() as sess:
-    init_op=tf.global_variables_initlizer()
+    init_op=tf.global_variables_initializer()
     sess.run(init_op)
     STEPS = 20000
     for i in range(STEPS):
         start=(i*BATCH_SIZE)%32
         end=start+BATCH_SIZE
-        sess.run(train_step,feed.dict={x:X[start:edt],y_:Y_[start:end]})
+        sess.run(train_step,feed_dict={x:X[start:end],y_:Y_[start:end]})
         if i%500 == 0:
             print "训练 %d 轮以后，w1是"%(i)
             print sess.run(w1)
-    print "最终w1为" sess.run(w1)
+    print "最终w1为",sess.run(w1)
