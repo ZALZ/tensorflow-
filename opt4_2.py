@@ -22,3 +22,17 @@ y = tf.matmul(x,w1)
 #定义的损失函数是的预测少了损失大，故模型应该往偏多预测
 loss = tf.reduce_sum(tf.where(tf.greater(y,y_),(y-y_)*COST,(y_-y)*PROFIT))
 train_step = tf.train.GradientOptimizer(0.001).minimize(loss)
+
+#生成会话，训练STEPS轮
+with tf.Session() as sess:
+    init_op=tf.global_variables_initializer()
+    sess.run(init_op)
+    STEPS = 20000
+    for i in range(STEPS):
+        start=(i*BATCH_SIZE)%32
+        end=start+BATCH_SIZE
+        sess.run(train_step,feed_dict={x:X[start:end],y_:Y_[start:end]})
+        if i%500 == 0:
+            print "训练 %d 轮以后，w1是"%(i)
+            print sess.run(w1)
+    print "最终w1为",sess.run(w1)
