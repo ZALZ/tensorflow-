@@ -36,5 +36,5 @@ def main():
     mnist = input_data.read_data_sets("./data/",onehot=Ture)
     rest(mnist)
     
-if __name__ == '__main__'
+if __name__ == '__main__':
     main()
